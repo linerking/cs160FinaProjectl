@@ -20,4 +20,3 @@ def init():
         cur.execute("use audios;")
     return(cur,con)
 
-

@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 pymysql = "*"
-pygame = "*"
-serial = "*"
 pynput = "*"
+pyaudio = "*"
+matplotlib = "*"
 
 [dev-packages]
 

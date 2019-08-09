@@ -2,41 +2,49 @@ import pickle
 from database import *
 import pymysql
 from pynput.keyboard import Controller,Key,Listener
-(cur,con)=init()
+import wave
+import pyaudio
+(cur,con)= init()
 #listen press
-id = ""
-def on_press(key):
-    global id
+def search(path):
+    cur.execute("select * from old where id = "+str(path))
+    infor = cur.fetchall()
     try:
-        id+=format(key.char)
+        print("22222")
+        audio = infor[0][1]
+        print("1111")
+        play(audio)
     except:
-        print("error")
-    if len(id) == 10:
-        cur.excute("select * from old where id = "+ id)
-        try:
-            audio = cur.fetchall()[0][1]
-            play(audio)
-        except:
-            print("no audio was found")
-        
-#listen release
-def on_release(key):
-    print("已经释放:",format(key))
- 
-    if key==key.esc:
-        # 停止监听
-        return False
- 
-#start listing
-def start_listen():
-    print("hh")
-    with Listener(on_press=on_press,on_release=on_release) as listener:
-        listener.join()
+        print("no audio was found")
+def play(path):
+    CHUNK = 1024
+# 从目录中读取语音
+    wf = wave.open(path, 'rb')
+# read data
+    data = wf.readframes(CHUNK)
+# 创建播放器
+    p = pyaudio.PyAudio()
+# 获得语音文件的各个参数
+    FORMAT = p.get_format_from_width(wf.getsampwidth())
+    CHANNELS = wf.getnchannels()
+    RATE = wf.getframerate()
+    print('FORMAT: {} \nCHANNELS: {} \nRATE: {}'.format(FORMAT, CHANNELS, RATE))
+# 打开音频流， output=True表示音频输出
+    stream = p.open(format=FORMAT,
+                    channels=CHANNELS,
+                    rate=RATE,
+                    frames_per_buffer=CHUNK,
+                    output=True)
+# play stream (3) 按照1024的块读取音频数据到音频流，并播放
+    while len(data) > 0:
+        stream.write(data)
+        data = wf.readframes(CHUNK)
+    stream.stop_stream()
+    stream.close()
 
-
-
-def play(audio):
-    print(audio)
-
+    p.terminate()
 while True:
-    start_listen()
+    # start_listen()
+    a = input("input id")
+    print(a)
+    search(a)

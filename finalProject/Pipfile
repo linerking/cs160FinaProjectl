@@ -1,15 +1,16 @@
 [[source]]
+name = "pypi"
 url = "https://pypi.org/simple"
 verify_ssl = true
-name = "pypi"
-
-[packages]
-pymysql = "*"
-pynput = "*"
-pyaudio = "*"
-matplotlib = "*"
 
 [dev-packages]
+
+[packages]
+pygame = "*"
+pymysql = "*"
+pyaudio = "*"
+pynput = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.7"

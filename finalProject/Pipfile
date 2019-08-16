@@ -11,6 +11,8 @@ pymysql = "*"
 pyaudio = "*"
 pynput = "*"
 matplotlib = "*"
+pyfirmata = "*"
+pyserial = "*"
 
 [requires]
 python_version = "3.7"
